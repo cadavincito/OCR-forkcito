@@ -7,66 +7,77 @@ from PIL import Image
 # Configuración de la página
 st.set_page_config(page_title="OCR Dark Mode", layout="centered")
 
-# CSS personalizado con gris oscuro
+# CSS personalizado con gris oscuro y texto blanco
 st.markdown("""
     <style>
         /* Tema principal - Gris oscuro */
+        :root {
+            --primary-bg: #2D2D2D;
+            --secondary-bg: #252525;
+            --element-bg: #333333;
+            --border-color: #444444;
+            --text-color: #FFFFFF;
+        }
+        
+        /* Todos los textos en blanco */
+        * {
+            color: var(--text-color) !important;
+        }
+        
         body {
-            background-color: #1A1A1A;
-            color: #FFFFFF;
+            background-color: var(--primary-bg);
             font-family: 'Segoe UI', sans-serif;
         }
         
         /* Contenedor principal */
         .stApp {
-            background-color: #2D2D2D;
+            background-color: var(--primary-bg);
             padding: 2rem;
             border-radius: 10px;
         }
         
         /* Títulos */
-        .stMarkdown h1 {
-            color: #FFFFFF !important;
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
             text-align: center;
-            border-bottom: 2px solid #444444;
-            padding-bottom: 10px;
         }
         
         /* Sidebar */
         .stSidebar {
-            background-color: #252525 !important;
-            border-right: 1px solid #444444;
+            background-color: var(--secondary-bg) !important;
+            border-right: 1px solid var(--border-color);
         }
         
         /* Radio buttons */
         .stRadio > div {
-            background-color: #333333;
+            background-color: var(--element-bg);
             padding: 10px;
             border-radius: 8px;
-        }
-        .stRadio label {
-            color: #FFFFFF !important;
         }
         
         /* Cámara */
         .stCamera {
-            border: 2px solid #444444;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             overflow: hidden;
         }
         
         /* Texto resultante */
         .stCodeBlock {
-            background-color: #333333 !important;
-            border: 1px solid #444444;
+            background-color: var(--element-bg) !important;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 15px !important;
         }
         
-        /* Mensajes del sistema */
-        .stAlert {
-            background-color: #333333 !important;
-            border: 1px solid #444444 !important;
+        /* Selectores y controles */
+        .stRadio, .stCheckbox, .stSelectbox, .stTextInput, .stSlider {
+            color: var(--text-color) !important;
+        }
+        
+        /* Placeholders */
+        ::placeholder {
+            color: #AAAAAA !important;
+            opacity: 1;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -91,6 +102,6 @@ if img_file_buffer is not None:
     img_rgb = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2RGB)
     text = pytesseract.image_to_string(img_rgb)
     
-    # Mostrar resultado con estilo
+    # Mostrar resultado
     st.markdown("### Resultado del reconocimiento:")
     st.code(text, language='text')
